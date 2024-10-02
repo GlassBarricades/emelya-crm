@@ -17,6 +17,7 @@ function App() {
 		createRoutesFromElements(
 			<>
 				<Route path='/' element={<MainLayout />}>
+					<Route index element={<DirectoryPage />} />
 					<Route path='directory' element={<DirectoryPage />} />
 					{/* <Route
 						index

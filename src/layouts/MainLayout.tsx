@@ -25,11 +25,9 @@ const MainLayout = () => {
 							<UnstyledButton
 								className={classes.control}
 								component={NavLink}
-								to='/directory'>
+								to='/directory'
+							>
 								Справочник
-							</UnstyledButton>
-							<UnstyledButton className={classes.control} component={NavLink} to='/grafik'>
-								График
 							</UnstyledButton>
 						</Group>
 					</Group>
@@ -37,8 +35,14 @@ const MainLayout = () => {
 			</AppShell.Header>
 
 			<AppShell.Navbar py='md' px={4}>
-				<UnstyledButton className={classes.control}>Справочник</UnstyledButton>
-				<UnstyledButton className={classes.control}>График</UnstyledButton>
+				<UnstyledButton
+					className={classes.control}
+					component={NavLink}
+					to='/directory'
+					onClick={toggle}
+				>
+					Справочник
+				</UnstyledButton>
 			</AppShell.Navbar>
 
 			<AppShell.Main>
