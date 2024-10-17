@@ -10,6 +10,10 @@ import DirectoryPage from './pages/DirectoryPage'
 import EmployeesAdminPage from './pages/Admin/EmployeesAdminPage'
 import RequireAuth from './hoc/RequireAuth'
 import LoginPage from './pages/LoginPage'
+import OffRoadAdminPage from './pages/Admin/OffRoadAdminPage'
+import AdminLayout from './layouts/AdminLayout'
+import ScheduleAdminPage from './pages/Admin/ScheduleAdminPage'
+import SchedulePage from './pages/SchedulePage'
 
 function App() {
 
@@ -19,6 +23,7 @@ function App() {
 				<Route path='/' element={<MainLayout />}>
 					<Route index element={<DirectoryPage />} />
 					<Route path='directory' element={<DirectoryPage />} />
+					<Route path='schedule' element={<SchedulePage />} />
 					{/* <Route
 						index
 						element={
@@ -47,7 +52,7 @@ function App() {
 					path='admin'
 					element={
 						<RequireAuth>
-							<MainLayout />
+							<AdminLayout />
 						</RequireAuth>
 					}
 				>
@@ -56,6 +61,22 @@ function App() {
 						element={
 							<RequireAuth>
 								<EmployeesAdminPage />
+							</RequireAuth>
+						}
+					/>
+					<Route
+						path='off-road'
+						element={
+							<RequireAuth>
+								<OffRoadAdminPage />
+							</RequireAuth>
+						}
+					/>
+					<Route
+						path='schedule'
+						element={
+							<RequireAuth>
+								<ScheduleAdminPage />
 							</RequireAuth>
 						}
 					/>

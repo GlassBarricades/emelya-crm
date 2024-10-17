@@ -1,0 +1,90 @@
+.tableContainer {
+  max-height: 90vh; /* Устанавливаем максимальную высоту для вертикальной прокрутки */
+  overflow: auto;
+  position: relative;
+}
+
+/* Закрепляем шапку таблицы */
+.stickyHeader {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 20; /* Более высокий z-index, чтобы перекрывать первую колонку */
+  transition: border 0.3s ease; /* Плавный переход для стиля рамки */
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1); /* Добавляем тень для визуального разделения */
+  border-bottom: none;
+}
+
+/* Псевдоэлемент для создания нижней границы у заголовка таблицы */
+.stickyHeader::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ccc; /* Цвет нижней границы */
+  z-index: 21; /* Обеспечиваем, чтобы граница оставалась над первой колонкой */
+  transition: background-color 0.3s ease; /* Плавный переход цвета */
+}
+
+/* Псевдоэлемент для создания верхней границы у заголовка таблицы */
+.stickyHeader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px; /* Толщина границы */
+  background-color: #ccc; /* Цвет верхней границы */
+  z-index: 21; /* Обеспечиваем, чтобы граница оставалась над первой колонкой */
+  transition: background-color 0.3s ease; /* Плавный переход цвета */
+}
+
+/* Закрепляем первый столбец */
+.stickyColumn {
+  position: sticky;
+  left: 0;
+  background-color: white;
+  z-index: 10; /* Меньший z-index, чтобы шапка перекрывала колонку */
+  white-space: nowrap; /* Предотвращаем перенос текста в ячейке */
+  border-right: none; /* Убираем стандартный border-right */
+  transition: border 0.3s ease; /* Плавный переход для стиля рамки */
+  box-shadow: 2px 0 2px rgba(0, 0, 0, 0.1); /* Легкая тень для разделения */
+}
+
+/* Псевдоэлемент для создания правой границы у первой колонки */
+.stickyColumn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 2px;
+  background-color: #ccc; /* Цвет правой границы */
+  z-index: 11; /* Обеспечиваем, чтобы граница оставалась видимой */
+  transition: background-color 0.3s ease; /* Плавный переход цвета */
+}
+
+/* Псевдоэлемент для создания левой границы у первой колонки */
+.stickyColumn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0; /* Сначала границы слева */
+  height: 100%;
+  width: 2px; /* Толщина границы */
+  background-color: #ccc; /* Цвет левой границы */
+  z-index: 12; /* Обеспечиваем, чтобы граница оставалась видимой */
+  transition: background-color 0.3s ease; /* Плавный переход цвета */
+}
+
+/* Усиливаем границу таблицы в момент прокрутки */
+.scrolled .stickyHeader::after,
+.scrolled .stickyColumn::after {
+  background-color: #000; /* Темный цвет границы при прокрутке */
+}
+
+.scrolled {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); /* Усиливаем тень при прокрутке */
+}

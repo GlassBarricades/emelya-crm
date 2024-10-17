@@ -15,7 +15,7 @@ const AdminPanelSettings = ({ element, deleteLink }: IProps) => {
 	return (
 		<Group>
 			<ActionIcon
-				size="lg"
+				size='lg'
 				radius={0}
 				variant={colorScheme.colorScheme === 'dark' ? 'outline' : 'default'}
 				onClick={() => dispatch(edited(element))}
@@ -24,7 +24,7 @@ const AdminPanelSettings = ({ element, deleteLink }: IProps) => {
 				<Pencil size='1.2rem' />
 			</ActionIcon>
 			<ActionIcon
-				size="lg"
+				size='lg'
 				radius={0}
 				variant={colorScheme.colorScheme === 'dark' ? 'outline' : 'default'}
 				onClick={() => deleteDataBase(deleteLink)}

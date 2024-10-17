@@ -29,6 +29,13 @@ const MainLayout = () => {
 							>
 								Справочник
 							</UnstyledButton>
+							<UnstyledButton
+								className={classes.control}
+								component={NavLink}
+								to='/schedule'
+							>
+								График
+							</UnstyledButton>
 						</Group>
 					</Group>
 				</Group>
@@ -42,6 +49,13 @@ const MainLayout = () => {
 					onClick={toggle}
 				>
 					Справочник
+				</UnstyledButton>
+				<UnstyledButton
+					className={classes.control}
+					component={NavLink}
+					to='/schedule'
+				>
+					График
 				</UnstyledButton>
 			</AppShell.Navbar>
 

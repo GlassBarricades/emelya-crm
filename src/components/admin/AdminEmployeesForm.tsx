@@ -3,13 +3,15 @@ import {
 	TextInput,
 	Group,
 	Checkbox,
-	Button
+	Button,
+	Collapse
 } from '@mantine/core'
 import writeToDatabase from '../../helpers/writeToDataBase'
 import submitChangeDataBase from '../../helpers/submitChangeDataBase'
 import { closeModal } from '../../store/editSlice'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useDisclosure } from '@mantine/hooks'
 
 interface IDataObj {
 	name: string
@@ -20,6 +22,7 @@ interface IDataObj {
 	taximeter: boolean
 	terminal: boolean
 	branding: boolean
+	schedule: any
 }
 
 const AdminEmployeesForm = () => {
@@ -27,6 +30,7 @@ const AdminEmployeesForm = () => {
 	const editData = useAppSelector(state => state.edit.editData)
 	const editUuid = useAppSelector(state => state.edit.editUuid)
 	const dispatch = useAppDispatch()
+	const [opened, { toggle }] = useDisclosure(false)
 
 	useEffect(() => {
 		if (edit) {
@@ -39,9 +43,39 @@ const AdminEmployeesForm = () => {
 				taximeter: editData.taximeter,
 				terminal: editData.terminal,
 				branding: editData.branding,
+				schedule: editData.schedule.map((item: any) => ({ ...item })),
 			})
 		}
 	}, [edit])
+
+	function generateMonthlySchedule() {
+		const date = new Date()
+
+		// Получаем текущий месяц и год
+		const year = date.getFullYear()
+		const month = date.getMonth() + 1 // В JS месяцы начинаются с 0, поэтому добавляем 1
+
+		// Определяем количество дней в месяце
+		const daysInMonth = new Date(year, month, 0).getDate()
+
+		// Формируем массив объектов с полями day и shift
+		const schedule = []
+
+		for (let day = 1; day <= daysInMonth; day++) {
+			schedule.push({
+				day: day, // Номер дня
+				shift: '', // Поле shift (можно задать значение по умолчанию)
+			})
+		}
+
+		return schedule
+	}
+
+	// Пример использования:
+	const schedule = generateMonthlySchedule()
+
+	// Клонируем массив schedule для того, чтобы можно было модифицировать его в форме
+	const scheduleClone = schedule.map(item => ({ ...item }))
 
 	const form = useForm<IDataObj>({
 		initialValues: {
@@ -50,6 +84,7 @@ const AdminEmployeesForm = () => {
 			job: '',
 			avatar: '',
 			phone: '',
+			schedule: scheduleClone,
 			taximeter: false,
 			terminal: false,
 			branding: false,
@@ -134,6 +169,20 @@ const AdminEmployeesForm = () => {
 					{...form.getInputProps('branding', { type: 'checkbox' })}
 				/>
 			</Group>
+				<Group justify='center' mb={5}>
+					<Button onClick={toggle}>График</Button>
+				</Group>
+
+				<Collapse in={opened}>
+					{form.values.schedule.map((item: any, index: any) => (
+						<TextInput
+							key={index}
+							label={`День ${item.day}`}
+							placeholder='Введите смену'
+							{...form.getInputProps(`schedule.${index}.shift`)} // Привязываем поле к форме
+						/>
+					))}
+				</Collapse>
 
 			<Button mt='md' type='submit' variant='default' radius={0} size='md'>
 				{edit ? 'Сохранить' : 'Отправить'}

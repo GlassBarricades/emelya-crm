@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 interface IEditData {
-	edit: boolean
+	edit: boolean | any
 	editUuid: string
 	editData: {
-		name?: string
+		name: string
 		title?: string
 		nickname?: string
 		description?: string
@@ -32,6 +32,7 @@ interface IEditData {
 		branding?: boolean
 		aboutImage?: string
 		aboutText?: string
+		schedule?: any
 	}
 	editModal: boolean
 }
@@ -42,7 +43,8 @@ const initialState: IEditData = {
 	editData: {
 		description: '',
 		text: '',
-		content: ''
+		content: '',
+		name: ''
 	},
 	editModal: false,
 }
@@ -74,7 +76,8 @@ const editSlice = createSlice({
 			state.editData = {
 				description: '',
 				text: '',
-				content: ''
+				content: '',
+				name: ''
 			}
 			state.edit = false
 			state.editUuid = ''
