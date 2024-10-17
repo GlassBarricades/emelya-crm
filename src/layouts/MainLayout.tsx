@@ -54,6 +54,7 @@ const MainLayout = () => {
 					className={classes.control}
 					component={NavLink}
 					to='/schedule'
+					onClick={toggle}
 				>
 					График
 				</UnstyledButton>
