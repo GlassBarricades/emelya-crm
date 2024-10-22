@@ -20,6 +20,7 @@ interface IEditData {
 		logoDarkTheme?: string
 		phone?: string
 		adress?: string
+		contacts?: any
 		adressLink?: string
 		email?: string
 		telegram?: string

@@ -1,11 +1,5 @@
 import { useForm, isNotEmpty } from '@mantine/form'
-import {
-	TextInput,
-	Group,
-	Checkbox,
-	Button,
-	Collapse
-} from '@mantine/core'
+import { TextInput, Group, Checkbox, Button, Collapse } from '@mantine/core'
 import writeToDatabase from '../../helpers/writeToDataBase'
 import submitChangeDataBase from '../../helpers/submitChangeDataBase'
 import { closeModal } from '../../store/editSlice'
@@ -18,7 +12,10 @@ interface IDataObj {
 	nickname: string
 	job: string
 	avatar: string
-	phone: string
+	contacts: {
+		phone: string | undefined
+		telegram: string | undefined
+	}
 	taximeter: boolean
 	terminal: boolean
 	branding: boolean
@@ -39,7 +36,10 @@ const AdminEmployeesForm = () => {
 				nickname: editData.nickname,
 				job: editData.job,
 				avatar: editData.avatar,
-				phone: editData.phone,
+				contacts: {
+					phone: editData.contacts.phone,
+					telegram: editData.contacts.telegram,
+				},
 				taximeter: editData.taximeter,
 				terminal: editData.terminal,
 				branding: editData.branding,
@@ -53,7 +53,7 @@ const AdminEmployeesForm = () => {
 
 		// Получаем текущий месяц и год
 		const year = date.getFullYear()
-		const month = date.getMonth() + 1 // В JS месяцы начинаются с 0, поэтому добавляем 1
+		const month = date.getMonth() + 1
 
 		// Определяем количество дней в месяце
 		const daysInMonth = new Date(year, month, 0).getDate()
@@ -83,7 +83,12 @@ const AdminEmployeesForm = () => {
 			nickname: '',
 			job: '',
 			avatar: '',
-			phone: '',
+			// phone: '',
+			// telegram: '',
+			contacts: {
+				phone: '',
+				telegram: '',
+			},
 			schedule: scheduleClone,
 			taximeter: false,
 			terminal: false,
@@ -134,7 +139,12 @@ const AdminEmployeesForm = () => {
 			<TextInput
 				label='Телефон'
 				placeholder='Телефон'
-				{...form.getInputProps('phone')}
+				{...form.getInputProps('contacts.phone')}
+			/>
+			<TextInput
+				label='Телеграм'
+				placeholder='Телеграм'
+				{...form.getInputProps('contacts.telegram')}
 			/>
 			<TextInput
 				placeholder='Сотрудничество'
@@ -169,20 +179,20 @@ const AdminEmployeesForm = () => {
 					{...form.getInputProps('branding', { type: 'checkbox' })}
 				/>
 			</Group>
-				<Group justify='center' mb={5}>
-					<Button onClick={toggle}>График</Button>
-				</Group>
+			<Group justify='center' mb={5}>
+				<Button onClick={toggle}>График</Button>
+			</Group>
 
-				<Collapse in={opened}>
-					{form.values.schedule.map((item: any, index: any) => (
-						<TextInput
-							key={index}
-							label={`День ${item.day}`}
-							placeholder='Введите смену'
-							{...form.getInputProps(`schedule.${index}.shift`)} // Привязываем поле к форме
-						/>
-					))}
-				</Collapse>
+			<Collapse in={opened}>
+				{form.values.schedule.map((item: any, index: any) => (
+					<TextInput
+						key={index}
+						label={`День ${item.day}`}
+						placeholder='Введите смену'
+						{...form.getInputProps(`schedule.${index}.shift`)} // Привязываем поле к форме
+					/>
+				))}
+			</Collapse>
 
 			<Button mt='md' type='submit' variant='default' radius={0} size='md'>
 				{edit ? 'Сохранить' : 'Отправить'}

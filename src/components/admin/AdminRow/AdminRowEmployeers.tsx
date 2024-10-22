@@ -27,7 +27,7 @@ const AdminRowEmployeers = memo(({ element }: IProps) => {
 					{element.job}
 				</Badge>
 			</Table.Td>
-			<Table.Td>{element.phone}</Table.Td>
+			<Table.Td>{element.contacts.phone}</Table.Td>
 			<Table.Td>
 				<Stack gap={2}>
 					<Text>{`Таксометр: ${element.taximeter}`}</Text>
