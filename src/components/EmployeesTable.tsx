@@ -1,14 +1,10 @@
 import {
-	Avatar,
 	Badge,
 	Table,
-	Group,
 	Text,
 	ActionIcon,
 	rem,
-	Grid,
 	Stack,
-	Image,
 	Button,
 	Loader,
 	Center,
@@ -21,6 +17,10 @@ interface Employee {
 	name: string
 	nickname: string
 	avatar: string
+	contacts: {
+		phone: string
+		telegram: string
+	}
 	phone: string
 	job: string
 	taximeter: boolean
@@ -34,21 +34,39 @@ const EmployeesTable = () => {
 		field: 'nickname',
 	})
 
+	console.log(data)
+
 	const rows = data.map((item: Employee) => (
-		<Table.Tr key={item.name}>
+		<Table.Tr key={item.nickname}>
 			<Table.Td>
-				<Group gap='sm'>
-					<Text w={25}>{item.nickname}</Text>
-					<Avatar size={30} src={item.avatar} radius={30} />
+				<Stack>
+					<Text>{item.nickname}</Text>
 					<Text fz='sm' fw={500}>
 						{item.name}
 					</Text>
-				</Group>
+				</Stack>
 			</Table.Td>
 			<Table.Td>
-				<Button variant='outline' component='a' href={`tel:${item.phone}`}>
-					Позвонить
-				</Button>
+				<Stack align='stretch' justify='center'>
+					<Button
+						variant='outline'
+						component='a'
+						href={`tel:${item.contacts.phone}`}
+					>
+						Позвонить
+					</Button>
+					{item.contacts.telegram !== '' ? (
+						<Button
+							variant='default'
+							component='a'
+							miw={"100%"}
+							href={`https://t.me/${item.contacts.telegram}`}
+							target='_blank'
+						>
+							Написать
+						</Button>
+					) : undefined}
+				</Stack>
 			</Table.Td>
 			<Table.Td>
 				<ActionIcon
@@ -58,28 +76,31 @@ const EmployeesTable = () => {
 						modals.open({
 							title: 'Профиль сотрудника',
 							children: (
-								<Grid>
-									<Grid.Col span={6}>
-										<Stack>
-											<Image src={item.avatar} />
-										</Stack>
-									</Grid.Col>
-									<Grid.Col span={6}>
 										<Stack>
 											<Text>{item.name}</Text>
 											<Text>{item.nickname}</Text>
-											<Text component='a' href={`tel:${item.phone}`} fz='sm'>
-												{item.phone}
+											<Text
+												component='a'
+												href={`tel:${item.contacts.phone}`}
+												fz='sm'
+											>
+												{item.contacts.phone}
 											</Text>
+											{item.contacts.telegram !== '' ? (
+												<Text
+													component='a'
+													href={`https://t.me/${item.contacts.telegram}`}
+													target='_blank'
+													fz='sm'
+												>
+													{item.contacts.telegram}
+												</Text>
+											) : undefined}
+
 											<Badge color={item.job.toLowerCase()} variant='light'>
 												{item.job}
 											</Badge>
-											<Text>Таксометр: {item.taximeter ? `Да` : `Нет`}</Text>
-											<Text>Терминал: {item.terminal ? `Да` : `Нет`}</Text>
-											<Text>Оклейка: {item.branding ? `Да` : `Нет`}</Text>
 										</Stack>
-									</Grid.Col>
-								</Grid>
 							),
 						})
 					}}
@@ -111,4 +132,4 @@ const EmployeesTable = () => {
 		</>
 	)
 }
-export default EmployeesTable;
+export default EmployeesTable
