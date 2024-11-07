@@ -1,5 +1,12 @@
 import { useForm, isNotEmpty } from '@mantine/form'
-import { TextInput, Group, Checkbox, Button, Collapse } from '@mantine/core'
+import {
+	TextInput,
+	Group,
+	Checkbox,
+	Button,
+	Collapse,
+	Flex,
+} from '@mantine/core'
 import writeToDatabase from '../../helpers/writeToDataBase'
 import submitChangeDataBase from '../../helpers/submitChangeDataBase'
 import { closeModal } from '../../store/editSlice'
@@ -50,31 +57,23 @@ const AdminEmployeesForm = () => {
 
 	function generateMonthlySchedule() {
 		const date = new Date()
-
-		// Получаем текущий месяц и год
 		const year = date.getFullYear()
 		const month = date.getMonth() + 1
-
-		// Определяем количество дней в месяце
 		const daysInMonth = new Date(year, month, 0).getDate()
 
-		// Формируем массив объектов с полями day и shift
 		const schedule = []
 
 		for (let day = 1; day <= daysInMonth; day++) {
 			schedule.push({
-				day: day, // Номер дня
-				shift: '', // Поле shift (можно задать значение по умолчанию)
+				day: day,
+				shift: '',
 			})
 		}
 
 		return schedule
 	}
 
-	// Пример использования:
 	const schedule = generateMonthlySchedule()
-
-	// Клонируем массив schedule для того, чтобы можно было модифицировать его в форме
 	const scheduleClone = schedule.map(item => ({ ...item }))
 
 	const form = useForm<IDataObj>({
@@ -83,8 +82,6 @@ const AdminEmployeesForm = () => {
 			nickname: '',
 			job: '',
 			avatar: '',
-			// phone: '',
-			// telegram: '',
 			contacts: {
 				phone: '',
 				telegram: '',
@@ -98,6 +95,13 @@ const AdminEmployeesForm = () => {
 			nickname: isNotEmpty('Поле не должно быть пустым'),
 		},
 	})
+
+	const clearSchedule = () => {
+		form.setFieldValue(
+			'schedule',
+			form.values.schedule.map((item: any) => ({ ...item, shift: '' }))
+		)
+	}
 
 	return (
 		<form
@@ -181,17 +185,23 @@ const AdminEmployeesForm = () => {
 			</Group>
 			<Group justify='center' mb={5}>
 				<Button onClick={toggle}>График</Button>
+				<Button onClick={clearSchedule} color='red'>
+					Очистить график
+				</Button>
 			</Group>
 
 			<Collapse in={opened}>
-				{form.values.schedule.map((item: any, index: any) => (
-					<TextInput
-						key={index}
-						label={`День ${item.day}`}
-						placeholder='Введите смену'
-						{...form.getInputProps(`schedule.${index}.shift`)} // Привязываем поле к форме
-					/>
-				))}
+				<Flex wrap='wrap' gap='sm' justify='start'>
+					{form.values.schedule.map((item: any, index: any) => (
+						<TextInput
+							key={index}
+							label={`День ${item.day}`}
+							placeholder='Введите смену'
+							{...form.getInputProps(`schedule.${index}.shift`)}
+							style={{ width: '120px' }}
+						/>
+					))}
+				</Flex>
 			</Collapse>
 
 			<Button mt='md' type='submit' variant='default' radius={0} size='md'>
